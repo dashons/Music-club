@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Асори - Музыкальный кружок для подростков</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        :root {
+            --purple: #7E57C2;
+            --dark-purple: #5E35B1;
+            --light-blue: #80DEEA;
+            --pink: #FF80AB;
+            --white: #FFFFFF;
+            --light-gray: #F5F5F5;
+            --page-bg: #f9f4ff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--page-bg);
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(126, 87, 194, 0.1) 0%, rgba(126, 87, 194, 0) 20%),
+                radial-gradient(circle at 90% 80%, rgba(128, 222, 234, 0.1) 0%, rgba(128, 222, 234, 0) 20%);
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        /* Музыкальные узоры */
+        .pattern {
+            position: fixed;
+            z-index: -1;
+            opacity: 0.2;
+        }
+        
+        .pattern-1 {
+            top: 10%;
+            left: 5%;
+            width: 120px;
+            height: 120px;
+            background: 
+                radial-gradient(circle, var(--purple) 20%, transparent 20%),
+                radial-gradient(circle, transparent 10%, var(--light-blue) 10%, var(--light-blue) 20%, transparent 20%);
+            background-size: 40px 40px;
+            transform: rotate(45deg);
+        }
+        
+        .pattern-2 {
+            bottom: 15%;
+            right: 7%;
+            width: 180px;
+            height: 180px;
+            background: 
+                linear-gradient(45deg, var(--purple) 25%, transparent 25%, transparent 75%, var(--purple) 75%),
+                linear-gradient(45deg, var(--purple) 25%, transparent 25%, transparent 75%, var(--purple) 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            border-radius: 50%;
+        }
+        
+        .pattern-3 {
+            top: 40%;
+            left: 30%;
+            width: 100px;
+            height: 100px;
+            background: 
+                linear-gradient(135deg, var(--light-blue) 25%, transparent 25%),
+                linear-gradient(225deg, var(--light-blue) 25%, transparent 25%),
+                linear-gradient(315deg, var(--light-blue) 25%, transparent 25%),
+                linear-gradient(45deg, var(--light-blue) 25%, transparent 25%);
+            background-size: 20px 20px;
+            transform: rotate(30deg);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(126, 87, 194, 0.1);
+            border-bottom: 2px solid var(--light-blue);
+        }
+        
+        .logo {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--dark-purple);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            letter-spacing: -1px;
+        }
+        
+        .logo i {
+            color: var(--light-blue);
+            margin-right: 10px;
+            font-size: 2.5rem;
+            }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--dark-purple);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            position: relative;
+            padding: 8px 5px;
+        }
+        
+        .nav-links a:hover {
+            color: var(--pink);
+        }
+        
+        .nav-links a.active {
+            color: var(--purple);
+            font-weight: 700;
+        }
+        
+        .nav-links a.active::after,
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--pink);
+            transition: width 0.3s;
+            border-radius: 3px;
+        }
+        
+        .nav-links a.active::after {
+            width: 100%;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* Main Content */
+        .page {
+            display: none;
+            padding: 80px 0;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 3.8rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--purple), var(--pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.1;
+            letter-spacing: -1px;
+        }
+        
+        .hero p {
+            font-size: 1.6rem;
+            color: var(--dark-purple);
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(to right, var(--purple), var(--dark-purple));
+            color: var(--white);
+            padding: 16px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(126, 87, 194, 0.4);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(to right, var(--pink), var(--purple));
+            transition: width 0.5s;
+            z-index: -1;
+        }
+        
+        .btn:hover::before {
+            width: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(126, 87, 194, 0.6);
+        }
+        
+        .music-instruments {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 80px;
+            flex-wrap: wrap;
+        }
+        
+        .instrument {
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(5px);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            animation: float 4s ease-in-out infinite;
+            transition: transform 0.3s;
+        }
+        
+        .instrument:hover {
+            transform: scale(1.1);
+        }
+        
+        .instrument:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+        
+        .instrument:nth-child(3) {
+            animation-delay: 1s;
+        }
+        
+        .instrument:nth-child(4) {
+            animation-delay: 1.5s;
+        }
+        
+        .instrument i {
+            font-size: 3.5rem;
+            color: var(--purple);
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0); }
+        }
+        
+        /* Section Styles */
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2.8rem;
+            display: inline-block;
+            background: linear-gradient(to right, var(--purple), var(--dark-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+        
+        .section-title p {
+            color: var(--dark-purple);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* About Section */
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 50px;
+            box-shadow: 0 15px 40px rgba(126, 87, 194, 0.15);
+        }
+        
+        .about-text {
+            flex: 1;
+        }
+        
+        .about-text h3 {
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            color: var(--dark-purple);
+        }
+        
+        .about-text p {
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+        }
+        
+        .about-image {
+            flex: 1;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+        
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(126, 87, 194, 0.3), rgba(128, 222, 234, 0.3));
+            z-index: 1;
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        /* Services Section */
+        .services {
+            background: linear-gradient(to bottom, rgba(126, 87, 194, 0.05), rgba(128, 222, 234, 0.05));
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.4s;
+            box-shadow: 0 10px 30px rgba(126, 87, 194, 0.1);
+            border: 2px solid transparent;
+            backdrop-filter: blur(5px);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(126, 87, 194, 0.2);
+            border-color: var(--light-blue);
+        }
+        
+        .service-icon {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, var(--purple), var(--light-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+        }
+        
+        .service-icon i {
+            font-size: 2.8rem;
+            color: white;
+        }
+        
+        .service-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            color: var(--dark-purple);
+        }
+        
+        .service-card p {
+            color: #666;
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+        
+        /* Pricing Section */
+        .pricing-table {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 25px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.4s;
+            box-shadow: 0 10px 30px rgba(126, 87, 194, 0.1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            border: 2px solid var(--light-blue);
+        }
+        
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(to right, var(--purple), var(--light-blue));
+        }
+        
+        .pricing-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 20px 40px rgba(126, 87, 194, 0.25);
+        }
+        
+        .price {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--purple);
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        
+        .price span {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            margin-right: 5px;
+        }
+        
+        .pricing-card ul {
+            list-style: none;
+            text-align: center;
+            margin: 30px 0;
+            padding: 0;
+        }
+        
+        .pricing-card ul li {
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 30px;
+            text-align: left;
+            color: #555;
+        }
+        
+        .pricing-card ul li::before {
+            content: '✓';
+            color: var(--light-blue);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.4rem;
+        }
+        
+        /* Testimonials Section */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 25px;
+            padding: 40px 30px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(126, 87, 194, 0.1);
+            transition: all 0.4s;
+            backdrop-filter: blur(5px);
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(126, 87, 194, 0.2);
+        }
+        
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 25px;
+            font-size: 5rem;
+            color: rgba(126, 87, 194, 0.1);
+            font-family: Georgia, serif;
+            font-weight: 800;
+        }
+        
+        .testimonial-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .testimonial-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--light-blue);
+            margin: 0 auto 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .testimonial-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 25px;
+            color: #555;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+        
+        .testimonial-author {
+            font-weight: 700;
+            color: var(--purple);
+            font-size: 1.2rem;
+        }
+        
+        .testimonial-author span {
+            display: block;
+            font-weight: 400;
+            color: #777;
+            font-size: 1rem;
+            margin-top: 5px;
+        }
+
+        .teachers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .teacher-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 25px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(126, 87, 194, 0.1);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s;
+        }
+        
+        .teacher-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(126, 87, 194, 0.2);
+        }
+        
+        .teacher-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 20px;
+            border: 4px solid var(--light-blue);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .teacher-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .teacher-info h3 {
+            color: var(--dark-purple);
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+        
+        .teacher-info p {
+            color: #555;
+            margin-bottom: 5px;
+        }
+        
+        .teacher-instruments {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .instrument-tag {
+            background: rgba(126, 87, 194, 0.1);
+            color: var(--purple);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* Gallary */
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .gallery-item {
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            height: 250px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 25px rgba(126, 87, 194, 0.3);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(94, 53, 177, 0.8);
+            color: white;
+            padding: 15px;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+        
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+
+        /* Contact Section */
+        .contact-container {
+            display: flex;
+            gap: 60px;
+        }
+        
+        .contact-info {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(126, 87, 194, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        
+        .contact-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: var(--dark-purple);
+        }
+        
+        .contact-details {
+            margin-bottom: 30px;
+        }
+        
+        .contact-details p {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            color: #555;
+        }
+        
+        .contact-details i {
+            color: var(--purple);
+            margin-right: 15px;
+            font-size: 1.4rem;
+            min-width: 30px;
+            padding-top: 3px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(to right, var(--purple), var(--dark-purple));
+            color: var(--white);
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(126, 87, 194, 0.3);
+        }
+        
+        .social-links a:hover {
+            transform: translateY(-5px);
+            background: linear-gradient(to right, var(--pink), var(--purple));
+        }
+        
+        .contact-form {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(126, 87, 194, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--dark-purple);
+            font-weight: 600;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(245, 245, 245, 0.7);
+            border: 2px solid rgba(126, 87, 194, 0.2);
+            border-radius: 15px;
+            color: #333;
+            font-size: 1.05rem;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--light-blue);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 0 4px rgba(128, 222, 234, 0.3);
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        /* Footer */
+        footer {
+            background: linear-gradient(to right, var(--dark-purple), var(--purple));
+            padding: 70px 0 30px;
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+            margin-top: 80px;
+        }
+        
+        .footer-wave {
+            position: absolute;
+            top: -50px;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" fill="%23f9f4ff"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="shape-fill"></path><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="shape-fill"></path><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" class="shape-fill"></path></svg>');
+            background-size: 1200px 100px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .footer-logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-logo i {
+            margin-right: 15px;
+            color: var(--light-blue);
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 35px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .footer-links a {
+            color: var(--light-blue);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .footer-links a:hover {
+            color: var(--pink);
+        }
+        
+        .social-links.footer-social {
+            margin-bottom: 40px;
+        }
+        
+        .copyright {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .about-content, .contact-container {
+                flex-direction: column;
+            }
+            
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .hero p {
+                font-size: 1.4rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+            
+            .hero {
+                padding: 80px 0 60px;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.3rem;
+            }
+            
+            .page {
+                padding: 60px 0;
+            }
+            
+            .music-instruments {
+                gap: 20px;
+            }
+            
+            .instrument {
+                width: 90px;
+                height: 90px;
+            }
+            
+            .instrument i {
+                font-size: 2.5rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .services-grid, .pricing-table, .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .about-content, .contact-info, .contact-form {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Музыкальные узоры -->
+    <div class="pattern pattern-1"></div>
+    
+    <div class="pattern pattern-3"></div>
+
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo" onclick="showPage('home')">
+                    <i class="fas fa-guitar"></i>
+                    Асори
+                </a>
+                <ul class="nav-links">
+                    <li><a href="#" class="active" onclick="showPage('home')">Главная</a></li>
+                    <li><a href="#" onclick="showPage('about')">О нас</a></li>
+                    <li><a href="#" onclick="showPage('services')">Услуги</a></li>
+                    <li><a href="#" onclick="showPage('pricing')">Цены</a></li>
+                    <li><a href="#" onclick="showPage('testimonials')">Отзывы</a></li>
+                    <li><a href="#" onclick="showPage('teachers')">Преподаватели</a></li>
+                    <li><a href="#" onclick="showPage('gallery')">Галерея</a></li>
+                    <li><a href="#" onclick="showPage('contact')">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Главная страница -->
+    <div id="home" class="page active">
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Твой ритм. Твоя музыка. Твой стиль.</h1>
+                    <p>Музыкальный школьный кружок для подростков, где рождаются звёзды</p>
+                    <a href="#" class="btn" onclick="showPage('contact')">Начать сейчас</a>
+                    
+                    <div class="music-instruments">
+                        <div class="instrument">
+                            <i class="fas fa-guitar"></i>
+                            
+                        </div>
+                        <div class="instrument">
+                            <i class="fas fa-drum"></i>
+                        </div>
+                        <div class="instrument">
+                            <i class="fas fa-keyboard"></i>
+                        </div>
+                        <div class="instrument">
+                            <i class="fas fa-microphone-alt"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <div class="container">
+                <div class="section-title">
+                    <h2>Почему выбирают нас</h2>
+                    <p>Лучшие условия для развития музыкальных талантов</p>
+                </div>
+                
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-music"></i>
+                        </div>
+                        <h3>Профессиональные педагоги</h3>
+                        <p>Наши преподаватели - опытные музыканты с педагогическим образованием</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Творческая атмосфера</h3>
+                        <p>Уютные студии с современным оборудованием для занятий</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h3>Гибкий график</h3>
+                        <p>Занятия в удобное время, включая вечерние часы и выходные</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Страница "О нас" -->
+    <div id="about" class="page">
+        <section>
+            <div class="container">
+                <div class="section-title">
+                    <h2>О нас</h2>
+                    <p>Кружок, где музыка становится частью тебя</p>
+                </div>
+                <div class="about-content">
+                    <div class="about-text">
+                        <h3>Асори - музыкальный мир для подростков</h3>
+                        <p>Мы создаем пространство, где подростки могут выразить себя через музыку. Наша команда профессиональных музыкантов и педагогов помогает раскрыть талант каждого ученика.</p>
+                        <p>У нас нет скучных уроков - только вдохновение, творчество и драйв. Мы верим, что музыка - это язык души, и каждый может научиться на нем говорить.</p>
+                        <p>Основанный в 2018 году, наш кружок уже выпустил десятки талантливых музыкантов, многие из которых продолжают свое музыкальное образование в профильных заведениях.</p>
+                        <a href="#" class="btn" onclick="showPage('contact')">Присоединиться</a>
+                    </div>
+                    <div class="about-image"><img src="music.jpg" alt=""></div>
+                       
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        
+    </div>
+
+    <!-- Страница "Услуги" -->
+    <div id="services" class="page">
+        <section>
+            <div class="container">
+                <div class="section-title">
+                    <h2>Наши услуги</h2>
+                    <p>Выбери свой музыкальный путь</p>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Групповые уроки</h3>
+                        <p>Учись и создавай музыку вместе с единомышленниками в дружеской атмосфере.</p>
+                        <ul style="margin-top: 20px; text-align: left; padding-left: 20px;">
+                            <li>Занятия в группах по 4-6 человек</li>
+                            <li>Развитие навыков ансамблевой игры</li>
+                            <li>Совместные творческие проекты</li>
+                            <li>2 занятия в неделю по 60 минут</li>
+                        </ul>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h3>Индивидуальные уроки</h3>
+                        <p>Персональный подход для максимального раскрытия твоего потенциала.</p>
+                        <ul style="margin-top: 20px; text-align: left; padding-left: 20px;">
+                            <li>Индивидуальная программа обучения</li>
+                            <li>Гибкий график занятий</li>
+                            <li>Углубленное изучение техники</li>
+                            <li>Подготовка к конкурсам и экзаменам</li>
+                        </ul>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-campground"></i>
+                        </div>
+                        <h3>Музыкальные лагеря</h3>
+                        <p>Недели творчества, драйва и музыки в кругу таких же увлеченных ребят.</p>
+                        <ul style="margin-top: 20px; text-align: left; padding-left: 20px;">
+                            <li>Летние и зимние смены</li>
+                            <li>Мастер-классы с известными музыкантами</li>
+                            <li>Запись собственных треков</li>
+                            <li>Финальный концерт для родителей</li>
+                        </ul>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3>Мастер-классы</h3>
+                        <p>Встречи с известными музыкантами и экспертами музыкальной индустрии.</p>
+                        <ul style="margin-top: 20px; text-align: left; padding-left: 20px;">
+                            <li>Секреты сценического мастерства</li>
+                            <li>Техники импровизации</li>
+                            <li>Основы звукозаписи</li>
+                            <li>Как продвигать свою музыку</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="services">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Направления обучения</h2>
+                    <p>Освой любой инструмент или вокал</p>
+                </div>
+                
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-guitar"></i>
+                        </div>
+                        <h3>Гитара</h3>
+                        <p>Акустическая, электро, бас-гитара. Все стили от классики до рока.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-drum"></i>
+                        </div>
+                        <h3>Ударные</h3>
+                        <p>Барабаны, перкуссия. Развитие чувства ритма и координации.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-keyboard"></i>
+                        </div>
+                        <h3>Клавишные</h3>
+                        <p>Фортепиано, синтезатор, клавишные в ансамбле.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-microphone-alt"></i>
+                        </div>
+                        <h3>Вокал</h3>
+                        <p>Академический, эстрадный, рок-вокал. Постановка голоса и дыхания.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-violin"></i>
+                        </div>
+                        <h3>Струнные</h3>
+                        <p>Скрипка, виолончель. Классика и современные техники.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-music"></i>
+                        </div>
+                        <h3>Музыкальная теория</h3>
+                        <p>Сольфеджио, гармония, нотная грамота, композиция.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Страница "Цены" -->
+    <div id="pricing" class="page">
+        <section>
+            <div class="container">
+                <div class="section-title">
+                    <h2>Доступное образование</h2>
+                    <p>Качественное обучение по справедливой цене</p>
+                </div>
+                <div class="pricing-table">
+                    <div class="pricing-card">
+                        <h3>Групповые уроки</h3>
+                        <div class="price"><span>от</span>1500₽</div>
+                        <p>за занятие</p>
+                        <ul>
+                            <li>Обучение игре на инструменте</li>
+                            <li>Развивающие упражнения</li>
+                            <li>Основы музыкальной теории</li>
+                            <li>Игра в ансамбле</li>
+                            <li>Отчетные концерты</li>
+                            <li>Занятия 2 раза в неделю</li>
+                        </ul>
+                        <a href="#" class="btn" onclick="showPage('contact')">Записаться</a>
+                    </div>
+                    <div class="pricing-card">
+                        <h3>Индивидуальные уроки</h3>
+                        <div class="price"><span>от</span>3000₽</div>
+                        <p>за занятие</p>
+                        <ul>
+                            <li>Интенсивная практика</li>
+                            <li>Развитие музыкальных навыков</li>
+                            <li>Персональная программа</li>
+                            <li>Гибкий график</li>
+                            <li>Подготовка к конкурсам</li>
+                            <li>Индивидуальный подход</li>
+                        </ul>
+                        <a href="#" class="btn" onclick="showPage('contact')">Записаться</a>
+                    </div>
+                    <div class="pricing-card">
+                        <h3>Дополнительные услуги</h3>
+                        <div class="price"><span>от</span>2000₽</div>
+                        <p>за услугу</p>
+                        <ul>
+                            <li>Подбор инструментов</li>
+                            <li>Подготовка к концертам</li>
+                            <li>Рекомендации по репертуару</li>
+                            <li>Аранжировка произведений</li>
+                            <li>Запись демо-треков</li>
+                            <li>Консультации по поступлению</li>
+                        </ul>
+                        <a href="#" class="btn" onclick="showPage('contact')">Записаться</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="services">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Скидки и акции</h2>
+                    <p>Специальные предложения для наших учеников</p>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <h3>Семейная скидка</h3>
+                        <p>10% скидка для второго ребенка из одной семьи</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <h3>Приведи друга</h3>
+                        <p>Получите 2 бесплатных занятия за каждого приведенного друга</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-music"></i>
+                        </div>
+                        <h3>Пробное занятие</h3>
+                        <p>Первое занятие в подарок для новых учеников</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h3>Абонемент</h3>
+                        <p>Скидка 15% при оплате абонемента на 3 месяца</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Страница "Отзывы" -->
+    <div id="testimonials" class="page">
+        <section>
+            <div class="container">
+                <div class="section-title">
+                    <h2>Отзывы</h2>
+                    <p>Что говорят наши ученики</p>
+                </div>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <div class="testimonial-image">
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="50" r="45" fill="#7E57C2"/>
+                                <circle cx="35" cy="40" r="5" fill="#FFFFFF"/>
+                                <circle cx="65" cy="40" r="5" fill="#FFFFFF"/>
+                                <path d="M 30 70 Q 50 85, 70 70" stroke="#FFFFFF" stroke-width="3" fill="none"/>
+                            </svg>
+                        </div>
+                        <div class="testimonial-content">
+                            <p class="testimonial-text">Занимаюсь в Асори уже год! Здесь крутые преподаватели, которые понимают подростков. Научился играть на гитаре и даже записали с группой первый трек!</p>
+                            <p class="testimonial-author">Максим, 15 лет</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-image">
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="50" r="45" fill="#FF80AB"/>
+                                <circle cx="35" cy="40" r="5" fill="#FFFFFF"/>
+                                <circle cx="65" cy="40" r="5" fill="#FFFFFF"/>
+                                <path d="M 30 70 Q 50 80, 70 70" stroke="#FFFFFF" stroke-width="3" fill="none"/>
+                            </svg>
+                        </div>
+                        <div class="testimonial-content">
+                            <p class="testimonial-text">Летний лагерь от Асори - это нечто! Целую неделю мы жили музыкой, писали песни, репетировали. Незабываемые эмоции и новые друзья!</p>
+                            <p class="testimonial-author">Аня, 14 лет</p>
+                        </div>
+                        </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-image">
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="50" r="45" fill="#80DEEA"/>
+                                <circle cx="35" cy="40" r="5" fill="#FFFFFF"/>
+                                <circle cx="65" cy="40" r="5" fill="#FFFFFF"/>
+                                <path d="M 30 65 Q 50 80, 70 65" stroke="#FFFFFF" stroke-width="3" fill="none"/>
+                            </svg>
+                        </div>
+                        <div class="testimonial-content">
+                            <p class="testimonial-text">Спасибо преподавателю по вокалу! Всего за полгода я перестала бояться сцены и выступила на школьном концерте. Это было невероятно!</p>
+                            <p class="testimonial-author">Катя, 16 лет</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-image">
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="50" r="45" fill="#5E35B1"/>
+                                <circle cx="35" cy="40" r="5" fill="#FFFFFF"/>
+                                <circle cx="65" cy="40" r="5" fill="#FFFFFF"/>
+                                <path d="M 30 70 Q 50 85, 70 70" stroke="#FFFFFF" stroke-width="3" fill="none"/>
+                            </svg>
+                        </div>
+                        <div class="testimonial-content">
+                            <p class="testimonial-text">Индивидуальные занятия помогли мне подготовиться к поступлению в музыкальный колледж. Преподаватель не только профессионал, но и отличный мотиватор!</p>
+                            <p class="testimonial-author">Денис, 17 лет</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-image">
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="50" r="45" fill="#7E57C2"/>
+                                <circle cx="35" cy="40" r="5" fill="#FFFFFF"/>
+                                <circle cx="65" cy="40" r="5" fill="#FFFFFF"/>
+                                <path d="M 30 70 Q 50 85, 70 70" stroke="#FFFFFF" stroke-width="3" fill="none"/>
+                            </svg>
+                        </div>
+                        <div class="testimonial-content">
+                            <p class="testimonial-text">Мастер-класс по игре на ударных был просто потрясающим! Никогда не думал, что смогу так быстро научиться играть сложные ритмы.</p>
+                            <p class="testimonial-author">Артем, 13 лет</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-image">
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="50" r="45" fill="#FF80AB"/>
+                                <circle cx="35" cy="40" r="5" fill="#FFFFFF"/>
+                                <circle cx="65" cy="40" r="5" fill="#FFFFFF"/>
+                                <path d="M 30 70 Q 50 80, 70 70" stroke="#FFFFFF" stroke-width="3" fill="none"/>
+                            </svg>
+                        </div>
+                        <div class="testimonial-content">
+                            <p class="testimonial-text">Благодаря занятиям в Асори я не только научилась играть на пианино, но и нашла новых друзей с такими же интересами. Спасибо за атмосферу!</p>
+                            <p class="testimonial-author">София, 15 лет</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Новая страница "Преподаватели" -->
+    <div id="teachers" class="page">
+        <section>
+            <div class="container">
+                <div class="section-title">
+                    <h2>Наши преподаватели</h2>
+                    <p>Профессионалы с любовью к музыке и детям</p>
+                </div>
+                
+                <div class="teachers-grid">
+                    <div class="teacher-card">
+                        <div class="teacher-image">
+                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Анна Петрова">
+                        </div>
+                        <div class="teacher-info">
+                            <h3>Анна Петрова</h3>
+                            <p>Фортепиано, вокал</p>
+                            <p>Стаж: 12 лет</p>
+                            <div class="teacher-instruments">
+                                <span class="instrument-tag">Фортепиано</span>
+                                <span class="instrument-tag">Вокал</span>
+                                <span class="instrument-tag">Теория музыки</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="teacher-card">
+                        <div class="teacher-image">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Максим Иванов">
+                        </div>
+                        <div class="teacher-info">
+                            <h3>Максим Иванов</h3>
+                            <p>Гитара, бас-гитара</p>
+                            <p>Стаж: 8 лет</p>
+                            <div class="teacher-instruments">
+                                <span class="instrument-tag">Гитара</span>
+                                <span class="instrument-tag">Бас-гитара</span>
+                                <span class="instrument-tag">Импровизация</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="teacher-card">
+                        <div class="teacher-image">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Екатерина Сидорова">
+                        </div>
+                        <div class="teacher-info">
+                            <h3>Екатерина Сидорова</h3>
+                            <p>Ударные, перкуссия</p>
+                            <p>Стаж: 6 лет</p>
+                            <div class="teacher-instruments">
+                                <span class="instrument-tag">Ударные</span>
+                                <span class="instrument-tag">Перкуссия</span>
+                                <span class="instrument-tag">Ритмика</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="teacher-card">
+                        <div class="teacher-image">
+                            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Дмитрий Кузнецов">
+                        </div>
+                        <div class="teacher-info">
+                            <h3>Дмитрий Кузнецов</h3>
+                            <p>Скрипка, теория музыки</p>
+                            <p>Стаж: 10 лет</p>
+                            <div class="teacher-instruments">
+                                <span class="instrument-tag">Скрипка</span>
+                                <span class="instrument-tag">Теория</span>
+                                <span class="instrument-tag">Композиция</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+<!-- Новая страница "Галерея" -->
+    <div id="gallery" class="page">
+        <section>
+            <div class="container">
+                <div class="section-title">
+                    <h2>Наша галерея</h2>
+                    <p>Запечатленные моменты творчества и вдохновения</p>
+                </div>
+                
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Урок игры на гитаре">
+                        <div class="gallery-caption">Урок игры на гитаре</div>
+                    </div>
+                    
+                    
+                    
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Концерт учеников">
+                        <div class="gallery-caption">Концерт учеников</div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Урок вокала">
+                        <div class="gallery-caption">Урок вокала</div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Выступление на фестивале">
+                        <div class="gallery-caption">Выступление на фестивале</div>
+                    </div>
+                    
+                    
+                    
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1453738773917-9c3eff1db985?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Групповые занятия">
+                        <div class="gallery-caption">Групповые занятия</div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <img src="piano.jpg" alt="Индивидуальный урок">
+                        <div class="gallery-caption">Индивидуальный урок</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Страница "Контакты" -->
+    <div id="contact" class="page">
+        <section>
+            <div class="container">
+                <div class="section-title">
+                    <h2>Контакты</h2>
+                    <p>Приходи к нам и начни свой музыкальный путь</p>
+                </div>
+                <div class="contact-container">
+                    <div class="contact-info">
+                        <h3>Наши контакты</h3>
+                        <div class="contact-details">
+                            <p><i class="fas fa-map-marker-alt"></i> г. Москва, ул. Музыкальная, д. 15</p>
+                            <p><i class="fas fa-envelope"></i> info@asori-music.ru</p>
+                            <p><i class="fas fa-phone"></i> +7 (495) 123-45-67</p>
+                            <p><i class="fas fa-clock"></i> Пн-Пт: 14:00 - 19:00, Сб-Вс: 10:00 - 18:00</p>
+                        </div>
+                        <h3>Мы в соцсетях</h3>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-vk"></i></a>
+                            <a href="#"><i class="fab fa-telegram"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-youtube"></i></a>
+                        </div>
+                        
+                        <div style="margin-top: 40px;">
+                            <h3>Как нас найти</h3>
+                            <div style="height: 300px; background: rgba(255,255,255,0.5);
+                             border-radius: 20px; margin-top: 20px; display: flex; align-items: center; 
+                             justify-content: center; border: 2px dashed var(--purple);">
+                                <p style="color: var(--purple); font-weight: 600;">Карта проезда</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contact-form">
+                        <form>
+                            <div class="form-group">
+                                <label for="fullname">Ваше имя</label>
+                                <input type="text" id="fullname" class="form-control" placeholder="Как к вам обращаться?" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Ваш Email</label>
+                                <input type="email" id="email" class="form-control" placeholder="example@mail.ru" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Телефон</label>
+                                <input type="tel" id="phone" class="form-control" placeholder="+7 (XXX) XXX-XX-XX" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="service">Интересующая услуга</label>
+                                <select id="service" class="form-control" required>
+                                    <option value="">Выберите услугу</option>
+                                    <option value="group">Групповые уроки</option>
+                                    <option value="individual">Индивидуальные уроки</option>
+                                    <option value="camp">Музыкальный лагерь</option>
+                                    <option value="master">Мастер-класс</option>
+                                    <option value="other">Другое</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="instrument">Интересующий инструмент</label>
+                                <select id="instrument" class="form-control">
+                                    <option value="">Не выбрано</option>
+                                    <option value="guitar">Гитара</option>
+                                    <option value="piano">Фортепиано</option>
+                                    <option value="drums">Ударные</option>
+                                    <option value="vocal">Вокал</option>
+                                    <option value="violin">Скрипка</option>
+                                    <option value="other">Другое</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="comments">Ваше сообщение</label>
+                                <textarea id="comments" class="form-control" placeholder="Расскажите о ваших музыкальных интересах..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn">Отправить</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-wave"></div>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-guitar"></i> Асори
+                </div>
+                <div class="footer-links">
+                    <a href="#" onclick="showPage('home')">Главная</a>
+                    <a href="#" onclick="showPage('about')">О нас</a>
+                    <a href="#" onclick="showPage('services')">Услуги</a>
+                    <a href="#" onclick="showPage('pricing')">Цены</a>
+                    <a href="#" onclick="showPage('testimonials')">Отзывы</a>
+                    <a href="#" onclick="showPage('teachers')">Преподаватели</a>
+                    <a href="#" onclick="showPage('gallery')">Галерея</a>
+                    <a href="#" onclick="showPage('contact')">Контакты</a>
+                </div>
+                <div class="social-links footer-social">
+                    <a href="#"><i class="fab fa-vk"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+                <div class="copyright">
+                    &copy; 2025 Музыкальный кружок "Асори"
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Функция для переключения страниц
+        function showPage(pageId) {
+            // Скрыть все страницы
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Показать выбранную страницу
+            document.getElementById(pageId).classList.add('active');
+            
+            // Обновить активную ссылку в навигации
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Найти и активировать соответствующую ссылку
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                if (link.textContent === getPageTitle(pageId)) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Прокрутить наверх
+            window.scrollTo(0, 0);
+        }
+        
+        // Функция для получения названия страницы по ID
+        function getPageTitle(pageId) {
+            const titles = {
+                'home': 'Главная',
+                'about': 'О нас',
+                'services': 'Услуги',
+                'pricing': 'Цены',
+                'testimonials': 'Отзывы',
+                'contact': 'Контакты'
+            };
+            return titles[pageId] || 'Главная';
+        }
+        
+        // Обработка формы
+        const contactForm = document.querySelector('form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Здесь должна быть логика отправки формы
+                alert('Спасибо! Мы скоро свяжемся с тобой, чтобы обсудить детали 🎵');
+                this.reset();
+            });
+        }
+        
+        // Анимация при прокрутке
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.service-card, .pricing-card, .testimonial-card');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+                
+                if (elementPosition < screenPosition) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        };
+        
+        // Инициализация анимаций
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', () => {
+            // Начальное состояние для анимируемых элементов
+            document.querySelectorAll('.service-card, .pricing-card, .testimonial-card').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            });
+            
+            // Запуск анимации при загрузке
+            setTimeout(animateOnScroll, 300);
+        });
+    </script>
+</body>
+</html>
